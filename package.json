@@ -1,0 +1,21 @@
+{
+  "name": "glamcart",
+  "version": "1.0.0",
+  "main": "script.js",
+   "scripts": {
+    "build": "echo 'No build needed for static site'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mirna-salem/GlamCart.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mirna-salem/GlamCart/issues"
+  },
+  "homepage": "https://github.com/mirna-salem/GlamCart#readme",
+  "description": ""
+}
