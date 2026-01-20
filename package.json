@@ -4,7 +4,7 @@
   "main": "script.js",
    "scripts": {
     "build": "echo 'No build needed for static site'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
