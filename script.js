@@ -59,13 +59,14 @@ async function fetchProducts(product_id) {
     data.forEach(obj => {
         var ul = document.createElement("ul");
         ul.setAttribute("class", "productUL");
-        
-        ul.innerHTML = "<li><img class='product-image' src='" + obj.image_link 
-        + "'</img></li><li class='product-name'>" + obj.name 
-        + "</li><li class='product-brand'>" + obj.brand 
-        + "</li><li class='product-price'>" + obj.price_sign 
-        + obj.price + 0 +"</li><li><button class='add-button' type='submit'>" + 'Add to Cart'
-        + "</button></li>";
+
+        ul.innerHTML = `
+            <li><img class="product-image" src="${obj.image_link}"></li>
+            <li class="product-name">${obj.name}</li>
+            <li class="product-brand">${obj.brand}</li>
+            <li class="product-price">${obj.price_sign}${Number(obj.price).toFixed(2)}</li>
+            <li><button class="add-button" type="button">Add to Cart</button></li>
+        `;
         document.getElementById('products').appendChild(ul);
         
     })
@@ -77,19 +78,19 @@ async function fetchProducts(product_id) {
 function ready() {
     var removeCartItemButtons = document.getElementsByClassName('btn-danger');
     
-    for(var i = 0; i < removeCartItemButtons.length; i++) {
+    for(let i = 0; i < removeCartItemButtons.length; i++) {
         var button = removeCartItemButtons[i]
         button.addEventListener('click', removeItem)
     }    
 
     var quantityInputs = document.getElementsByClassName('cart-quantity-input');
-    for(var i = 0; i < quantityInputs.length; i++) {
+    for(let i = 0; i < quantityInputs.length; i++) {
         var input = quantityInputs[i];
         input.addEventListener('change', quantityChanged);
     }
 
     var addToCartButtons = document.getElementsByClassName("add-button")
-    for(var i = 0; i < addToCartButtons.length; i++) {
+    for(let i = 0; i < addToCartButtons.length; i++) {
         var button = addToCartButtons[i];
         button.addEventListener("click", addToCartClicked)
     }
@@ -124,7 +125,7 @@ function addItemToCart(title, price, imageSrc) {
     cartRow.classList.add('cart-row')
     var cartItems = document.getElementsByClassName('cart-items')[0];
     var cartItemNames = cartItems.getElementsByClassName('cart-item-title')
-    for(var i=0; i < cartItemNames.length; i++) {
+    for(let i=0; i < cartItemNames.length; i++) {
         if(cartItemNames[i].innerText == title) {
             var val = cartItemNames[i].parentNode.parentNode.getElementsByClassName('cart-quantity-input')[0].value;
             val = parseInt(val);
@@ -165,20 +166,26 @@ function quantityChanged(event) {
 } 
 
 function updateCartTotal () {
-    var cartItemContainer = document.getElementsByClassName('cart-items')[0];
-    var cartRows = cartItemContainer.getElementsByClassName('cart-row');
-    var total = 0;
-    for(var i=0; i < cartRows.length; i++) {
-        var cartRow = cartRows[i];
-        var priceElement = cartRow.getElementsByClassName('cart-price')[0];
-        var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0];
-        var price = parseFloat(priceElement.innerText.replace('$', ''));
-        var quantity = quantityElement.value;
+    const cartItemContainer = document.querySelector('.cart-items');
+    const cartRows = cartItemContainer.querySelectorAll('.cart-row');
+
+    let total = 0;
+    for(let i=0; i < cartRows.length; i++) {
+        const cartRow = cartRows[i];
+        const priceElement = cartRow.querySelector('.cart-price');
+        const quantityElement = cartRow.querySelector('.cart-quantity-input');
+        
+        const price = parseFloat(priceElement.innerText.replace('$', ''));
+        const quantity = quantityElement.value;
         total += price * quantity;
     }
-    total = (Math.round((total * 1000)/10)/100).toFixed(2)
-    document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total;
-    document.getElementsByClassName('cart-total-price')[1].innerText = '$' + total;
+    
+    const formattedTotal = total.toFixed(2);
+
+    const totalDisplays = document.querySelectorAll('.cart-total-price');
+    totalDisplays.forEach(display => {
+        display.innerText = `$${formattedTotal}`;
+    });
 }
 
 function validate(){

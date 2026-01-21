@@ -2,8 +2,10 @@
   "name": "glamcart",
   "version": "1.0.0",
   "main": "script.js",
-   "scripts": {
-    "build": "echo 'No build needed for static site'",
+  "scripts": {
+    "start": "vite --open",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "node test.js"
   },
   "repository": {
@@ -17,5 +19,8 @@
     "url": "https://github.com/mirna-salem/GlamCart/issues"
   },
   "homepage": "https://github.com/mirna-salem/GlamCart#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
 }
