@@ -6,7 +6,7 @@ for (var i = 0; i < my_products.length; i++) {
     my_products[i].addEventListener("click", toggleProducts);
 }
 function toggleProducts(event) {
-    document.getElementById('products').style.display = 'flex';
+    document.getElementById('products').style.display = 'grid';
     document.getElementById('homepage').style.display = 'none';
     document.getElementById('cart-section').style.display = 'none';
     document.getElementById('contact').style.display = 'none';
