@@ -1,7 +1,7 @@
 
 // Show Products Page, hide everything else
 var my_products = document.getElementsByClassName("product_nav");
-for (var i = 0; i < my_products.length; i++){
+for (var i = 0; i < my_products.length; i++) {
     console.log(my_products[i])
     my_products[i].addEventListener("click", toggleProducts);
 }
@@ -42,7 +42,7 @@ function toggleContact() {
     document.getElementById('contact').style.display = 'block';
 }
 
-async function fetchProducts(product_id) {    
+async function fetchProducts(product_id) {
     var my_api = {
         eyes: 'http://makeup-api.herokuapp.com/api/v1/products.json?product_type=mascara&brand=nyx',
         face: 'http://makeup-api.herokuapp.com/api/v1/products.json?product_type=foundation&brand=nyx',
@@ -68,7 +68,7 @@ async function fetchProducts(product_id) {
             <li><button class="add-button" type="button">Add to Cart</button></li>
         `;
         document.getElementById('products').appendChild(ul);
-        
+
     })
 
     ready();
@@ -77,20 +77,20 @@ async function fetchProducts(product_id) {
 
 function ready() {
     var removeCartItemButtons = document.getElementsByClassName('btn-danger');
-    
-    for(let i = 0; i < removeCartItemButtons.length; i++) {
+
+    for (let i = 0; i < removeCartItemButtons.length; i++) {
         var button = removeCartItemButtons[i]
         button.addEventListener('click', removeItem)
-    }    
+    }
 
     var quantityInputs = document.getElementsByClassName('cart-quantity-input');
-    for(let i = 0; i < quantityInputs.length; i++) {
+    for (let i = 0; i < quantityInputs.length; i++) {
         var input = quantityInputs[i];
         input.addEventListener('change', quantityChanged);
     }
 
     var addToCartButtons = document.getElementsByClassName("add-button")
-    for(let i = 0; i < addToCartButtons.length; i++) {
+    for (let i = 0; i < addToCartButtons.length; i++) {
         var button = addToCartButtons[i];
         button.addEventListener("click", addToCartClicked)
     }
@@ -102,7 +102,7 @@ function ready() {
 function purchaseComplete() {
     alert('Thank you for your purchase!');
     var cartItems = document.getElementsByClassName('cart-items')[0]
-    while(cartItems.hasChildNodes()) {
+    while (cartItems.hasChildNodes()) {
         cartItems.removeChild(cartItems.firstChild);
     }
     updateCartTotal();
@@ -115,7 +115,7 @@ function addToCartClicked(event) {
     var price = shopItem.getElementsByClassName("product-price")[0].innerHTML;
     var imageSrc = shopItem.getElementsByClassName("product-image")[0].src;
     alert(`${itemName} is added to your shopping cart!`);
-    addItemToCart(itemName,price,imageSrc);
+    addItemToCart(itemName, price, imageSrc);
     updateCartTotal();
 }
 
@@ -125,8 +125,8 @@ function addItemToCart(title, price, imageSrc) {
     cartRow.classList.add('cart-row')
     var cartItems = document.getElementsByClassName('cart-items')[0];
     var cartItemNames = cartItems.getElementsByClassName('cart-item-title')
-    for(let i=0; i < cartItemNames.length; i++) {
-        if(cartItemNames[i].innerText == title) {
+    for (let i = 0; i < cartItemNames.length; i++) {
+        if (cartItemNames[i].innerText == title) {
             var val = cartItemNames[i].parentNode.parentNode.getElementsByClassName('cart-quantity-input')[0].value;
             val = parseInt(val);
             val++;
@@ -144,7 +144,7 @@ function addItemToCart(title, price, imageSrc) {
             <input class="cart-quantity-input" type="number" value="1">
             <button class="btn btn-danger" type="button">REMOVE</button>
         </div>`
-        cartRow.innerHTML = cartRowContents
+    cartRow.innerHTML = cartRowContents
     cartItems.append(cartRow);
     cartRow.getElementsByClassName('btn-danger')[0].addEventListener('click', removeItem)
     cartRow.getElementsByClassName('cart-quantity-input')[0].addEventListener('change', quantityChanged)
@@ -159,27 +159,27 @@ function removeItem(event) {
 
 function quantityChanged(event) {
     var input = event.target;
-    if(isNaN(input.value) || input.value <= 0) {
+    if (isNaN(input.value) || input.value <= 0) {
         input.value = 1
     }
     updateCartTotal();
-} 
+}
 
-function updateCartTotal () {
+function updateCartTotal() {
     const cartItemContainer = document.querySelector('.cart-items');
     const cartRows = cartItemContainer.querySelectorAll('.cart-row');
 
     let total = 0;
-    for(let i=0; i < cartRows.length; i++) {
+    for (let i = 0; i < cartRows.length; i++) {
         const cartRow = cartRows[i];
         const priceElement = cartRow.querySelector('.cart-price');
         const quantityElement = cartRow.querySelector('.cart-quantity-input');
-        
+
         const price = parseFloat(priceElement.innerText.replace('$', ''));
         const quantity = quantityElement.value;
         total += price * quantity;
     }
-    
+
     const formattedTotal = total.toFixed(2);
 
     const totalDisplays = document.querySelectorAll('.cart-total-price');
@@ -188,30 +188,44 @@ function updateCartTotal () {
     });
 }
 
-function validate(){
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    var message = document.getElementById("yourMessage").value;
-    var error_message = document.getElementById("errorMessage");
+
+// 1. Select the form
+const contactForm = document.querySelector("#formContainer");
+
+// 2. Attach the listener
+contactForm.addEventListener("submit", function(event) {
+    // 3. STOP the page from refreshing/restarting
+    event.preventDefault();
+
+    // 4. Get values
+    const name = document.querySelector("#name").value;
+    const email = document.querySelector("#email").value;
+    const message = document.querySelector("#yourMessage").value;
+    const errorMessage = document.querySelector("#errorMessage");
     
-    error_message.style.padding = "10px";
-    
-    var text;
-    if(name.length < 5){
-      text = "Please Enter Valid Name";
-      error_message.innerHTML = text;
-      return false;
+    // Clear previous styles/text
+    errorMessage.innerHTML = "";
+    errorMessage.style.padding = "10px";
+
+    // 5. Validation Logic
+    if (name.length < 5) {
+        errorMessage.innerHTML = "Please Enter Valid Name (at least 5 chars)";
+        return;
     }
-    if(email.indexOf("@") == -1 || email.length < 6){
-      text = "Please Enter valid Email";
-      error_message.innerHTML = text;
-      return false;
+
+    if (!email.includes("@") || email.length < 6) {
+        errorMessage.innerHTML = "Please Enter valid Email";
+        return;
     }
-    if(message.length <= 140){
-      text = "Please Enter More Than 140 Characters";
-      error_message.innerHTML = text;
-      return false;
+
+    if (message.length <= 140) {
+        errorMessage.innerHTML = "Please Enter More Than 140 Characters";
+        return;
     }
+
+    // 6. Success
     alert("Form Submitted Successfully!");
-    return true;
-  }
+    contactForm.reset(); // This clears the form fields for the user
+});
+
+
